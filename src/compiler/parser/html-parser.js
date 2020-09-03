@@ -61,6 +61,7 @@ function decodeAttr(value, shouldDecodeNewlines) {
 export function parseHTML(html, options) {
   const stack = []
   const expectHTML = options.expectHTML
+  // * <br/> <hr/> <meta>...
   const isUnaryTag = options.isUnaryTag || no
   const canBeLeftOpenTag = options.canBeLeftOpenTag || no
   let index = 0
@@ -111,8 +112,10 @@ export function parseHTML(html, options) {
         }
 
         // Start tag:
+        // * @JK: 处理开始标签，获取标签名，属性等
         const startTagMatch = parseStartTag()
         if (startTagMatch) {
+          // * 调用开标签回调函数
           handleStartTag(startTagMatch)
           if (shouldIgnoreFirstNewline(startTagMatch.tagName, html)) {
             advance(1)
@@ -237,6 +240,7 @@ export function parseHTML(html, options) {
     const attrs = new Array(l)
     for (let i = 0; i < l; i++) {
       const args = match.attrs[i]
+      // * 因为match后是数组形式，regexp的match结果
       const value = args[3] || args[4] || args[5] || ''
       const shouldDecodeNewlines = tagName === 'a' && args[1] === 'href' ?
         options.shouldDecodeNewlinesForHref :

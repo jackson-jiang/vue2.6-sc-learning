@@ -9,8 +9,16 @@
     <div id="demo">
         <h1>事件处理机制</h1>
         <!--普通事件-->
+        <!--
+          createComponent[vnode]时，加入componentVNode hooks
+          createElm->create钩子和patchVNode -> update钩子 -> updateDOMListeners
+          createHooks/updateHooks的
+        -->
         <p @click="onClick">this is p</p>
         <!--自定义事件-->
+        <!--
+          init -> initEvents -> updateListeners -> add -> componet.$on
+        -->
         <comp @myclick="onMyClick"></comp>
     </div>
     <script src="../../dist/vue.js"></script>
@@ -39,7 +47,7 @@
             },
         });
         console.log(app.$options.render);
-        
+
     </script>
 </body>
 </html>

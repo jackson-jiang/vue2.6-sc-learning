@@ -38,7 +38,7 @@ export function createElement(
   children: any,
   normalizationType: any,
   alwaysNormalize: boolean
-): VNode | Array < VNode > {
+): VNode | Array<VNode> {
   if (Array.isArray(data) || isPrimitive(data)) {
     normalizationType = children
     children = data
@@ -50,13 +50,15 @@ export function createElement(
   return _createElement(context, tag, data, children, normalizationType)
 }
 
+// * 创建vnode元素
+// ? data怎么用，钩子之类的
 export function _createElement(
   context: Component,
-  tag ? : string | Class < Component > | Function | Object,
-  data ? : VNodeData,
-  children ? : any,
-  normalizationType ? : number
-): VNode | Array < VNode > {
+  tag ?: string | Class<Component> | Function | Object,
+  data ?: VNodeData,
+  children ?: any,
+  normalizationType ?: number
+): VNode | Array<VNode> {
   if (isDef(data) && isDef((data: any).__ob__)) {
     process.env.NODE_ENV !== 'production' && warn(
       `Avoid using observed data object as vnode data: ${JSON.stringify(data)}\n` +
@@ -104,6 +106,8 @@ export function _createElement(
   if (typeof tag === 'string') {
     let Ctor
     ns = (context.$vnode && context.$vnode.ns) || config.getTagNamespace(tag)
+
+    // * 正常的html tag + svg
     if (config.isReservedTag(tag)) {
       // platform built-in elements
       if (process.env.NODE_ENV !== 'production' && isDef(data) && isDef(data.nativeOn)) {
@@ -118,9 +122,11 @@ export function _createElement(
       )
     } else if ((!data || !data.pre) && isDef(Ctor = resolveAsset(context.$options, 'components', tag))) {
       // * @JK[组件化]: 03 对于组件类型的元素，创建组件vnode
+      // * 找到了组件定义(本身components，命名转换，原型链)
       // component
       vnode = createComponent(Ctor, data, context, children, tag)
     } else {
+      // * 未知元素
       // unknown or unlisted namespaced elements
       // check at runtime because it may get assigned a namespace when its
       // parent normalizes children
@@ -130,6 +136,7 @@ export function _createElement(
       )
     }
   } else {
+    // * 直接是组件配置对象/函数
     // direct component options / constructor
     vnode = createComponent(tag, data, context, children)
   }

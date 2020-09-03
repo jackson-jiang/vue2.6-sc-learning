@@ -47,6 +47,7 @@ const componentVNodeHooks = {
       !vnode.componentInstance._isDestroyed &&
       vnode.data.keepAlive
     ) {
+      // * keep-alive的处理
       // kept-alive components, treat as a patch
       const mountedNode: any = vnode // work around flow
       componentVNodeHooks.prepatch(mountedNode, mountedNode)
@@ -113,18 +114,19 @@ const hooksToMerge = Object.keys(componentVNodeHooks)
 // * @JK[组件化]: 03-1 创建组件vnode定义
 // * 并不初始化，构造函数和属性放到vnode上
 export function createComponent(
-  Ctor: Class < Component > | Function | Object | void,
+  Ctor: Class<Component> | Function | Object | void,
   data: ? VNodeData,
-  context : Component,
-  children: ? Array < VNode > ,
-  tag ? : string
-): VNode | Array < VNode > | void {
+  context: Component,
+  children: ? Array<VNode> ,
+  tag ?: string
+): VNode | Array<VNode> | void {
   if (isUndef(Ctor)) {
     return
   }
   // * @JK: _base = Vue
   const baseCtor = context.$options._base
 
+  // * vue config --> Vue class
   // plain options object: turn it into a constructor
   if (isObject(Ctor)) {
     Ctor = baseCtor.extend(Ctor)
@@ -168,7 +170,7 @@ export function createComponent(
   if (isDef(data.model)) {
     transformModel(Ctor.options, data)
   }
-
+  // 实际参数
   // extract props
   const propsData = extractPropsFromVNodeData(data, Ctor, tag)
 

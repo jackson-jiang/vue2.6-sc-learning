@@ -77,7 +77,7 @@ let maybeComponent
 
 export function createASTElement(
   tag: string,
-  attrs: Array < ASTAttr > ,
+  attrs: Array<ASTAttr> ,
   parent: ASTElement | void
 ): ASTElement {
   return {
@@ -244,7 +244,7 @@ export function parse(
       if (isIE && ns === 'svg') {
         attrs = guardIESVGBug(attrs)
       }
-      // * @JK: 创建AST元素
+      // * @JK: 创建AST元素，在parent下，树结构
       let element: ASTElement = createASTElement(tag, attrs, currentParent)
       if (ns) {
         element.ns = ns
@@ -301,6 +301,7 @@ export function parse(
         processRawAttrs(element)
       } else if (!element.processed) {
         // structural directives
+        // * 处理for if once
         processFor(element)
         processIf(element)
         processOnce(element)
@@ -314,8 +315,9 @@ export function parse(
       }
 
       if (!unary) {
-        currentParent = element
         // * @JK: 构建树，开标签入栈，闭标签出栈
+        // * 当前元素为当前节点
+        currentParent = element
         stack.push(element)
       } else {
         closeElement(element)
@@ -437,7 +439,7 @@ function processRawAttrs(el) {
   const list = el.attrsList
   const len = list.length
   if (len) {
-    const attrs: Array < ASTAttr > = el.attrs = new Array(len)
+    const attrs: Array<ASTAttr> = el.attrs = new Array(len)
     for (let i = 0; i < len; i++) {
       attrs[i] = {
         name: list[i].name,
@@ -532,8 +534,8 @@ export function processFor(el: ASTElement) {
 type ForParseResult = {
   for: string;
   alias: string;
-  iterator1 ? : string;
-  iterator2 ? : string;
+  iterator1 ?: string;
+  iterator2 ?: string;
 };
 
 export function parseFor(exp: string): ? ForParseResult {
@@ -590,7 +592,7 @@ function processIfConditions(el, parent) {
   }
 }
 
-function findPrevElement(children: Array < any > ) : ASTElement | void {
+function findPrevElement(children: Array<any> ): ASTElement | void {
   let i = children.length
   while (i--) {
     if (children[i].type === 1) {
@@ -956,7 +958,7 @@ function parseModifiers(name: string): Object | void {
   }
 }
 
-function makeAttrsMap(attrs: Array < Object > ): Object {
+function makeAttrsMap(attrs: Array<Object> ): Object {
   const map = {}
   for (let i = 0, l = attrs.length; i < l; i++) {
     if (

@@ -74,7 +74,7 @@ export class Observer {
   /**
    * Observe a list of Array items.
    */
-  observeArray(items: Array < any > ) {
+  observeArray(items: Array<any> ) {
     for (let i = 0, l = items.length; i < l; i++) {
       observe(items[i])
     }
@@ -98,7 +98,7 @@ function protoAugment(target, src: Object) {
  * hidden properties.
  */
 /* istanbul ignore next */
-function copyAugment(target: Object, src: Object, keys: Array < string > ) {
+function copyAugment(target: Object, src: Object, keys: Array<string> ) {
   for (let i = 0, l = keys.length; i < l; i++) {
     const key = keys[i]
     def(target, key, src[key])
@@ -145,9 +145,9 @@ export function observe(value: any, asRootData: ? boolean): Observer | void {
 export function defineReactive(
   obj: Object,
   key: string,
-  val: any,
-  customSetter ? : ? Function,
-  shallow ? : boolean
+  val: any, // * @JK: val是实际的val，闭包
+  customSetter ?: ? Function,
+  shallow ?: boolean
 ) {
   const dep = new Dep()
 
@@ -212,7 +212,7 @@ export function defineReactive(
  * triggers change notification if the property doesn't
  * already exist.
  */
-export function set(target: Array < any > | Object, key: any, val: any): any {
+export function set(target: Array<any> | Object, key: any, val: any): any {
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
@@ -247,7 +247,7 @@ export function set(target: Array < any > | Object, key: any, val: any): any {
 /**
  * Delete a property and trigger change if necessary.
  */
-export function del(target: Array < any > | Object, key: any) {
+export function del(target: Array<any> | Object, key: any) {
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
@@ -279,7 +279,7 @@ export function del(target: Array < any > | Object, key: any) {
  * Collect dependencies on array elements when the array is touched, since
  * we cannot intercept array element access like property getters.
  */
-function dependArray(value: Array < any > ) {
+function dependArray(value: Array<any> ) {
   for (let e, i = 0, l = value.length; i < l; i++) {
     e = value[i]
     e && e.__ob__ && e.__ob__.dep.depend()

@@ -10,7 +10,6 @@
     <div id="demo">
         <h1>初始化流程</h1>
         <p>{{foo}}</p>
-        
     </div>
     <script>
         // render > template > el
@@ -22,8 +21,9 @@
             // render(h){return h('div','render')},
             data:{foo:'foo'}
         })
+        setTimeout(_=> app.foo = 'am')
         console.log(app.$options.render);
-        
+
     </script>
 </body>
 </html>

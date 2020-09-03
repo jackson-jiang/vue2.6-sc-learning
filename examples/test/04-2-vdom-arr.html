@@ -10,6 +10,14 @@
     <div id="demo">
         <h1>虚拟DOM</h1>
         <div>
+            <!-- 执行dom操作的计算 -->
+            <!-- key不对的情况 -->
+            <!-- <p v-for="a in arr" :key="a+new Date">{{a}}</p> -->
+            <!-- 插入4次，删除3次 -->
+            <!-- 不定义key的情况，相当于key=undefined -->
+            <!-- 执行4次，因为是same node，每次都更新 -->
+            <!-- <p v-for="a in arr">{{a}}</p> -->
+            <!-- 执行1次dom操作 -->
             <p v-for="a in arr" :key="a">{{a}}</p>
         </div>
     </div>
@@ -20,7 +28,7 @@
             data: { arr: [1,2,3] },
             mounted() {
                 setTimeout(() => {
-                    this.arr.push(4)
+                    this.arr.unshift(4)
                 }, 1000);
             }
         });

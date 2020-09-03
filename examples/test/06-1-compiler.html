@@ -12,6 +12,7 @@
     <div id="demo">
         <h1>Vue模板<span>编译</span></h1>
         <p v-if="foo">{{foo}}</p>
+        <p v-for="f in foos" :key="f">{{f}}</p>
         <comp></comp>
     </div>
     <script>
@@ -21,7 +22,7 @@
         // 创建实例
         const app = new Vue({
             el: '#demo',
-            data: {foo:'foo'}
+            data: {foo:'foo', foos:[]}
         });
         // 输出render函数
         console.log(app.$options.render);

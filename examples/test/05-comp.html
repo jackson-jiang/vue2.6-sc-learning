@@ -9,16 +9,25 @@
 <body>
     <div id="demo">
         <h1>Vue组件化机制</h1>
-        <comp></comp>
+        <comp :msg="msg"></comp>
     </div>
     <script>
         Vue.component('comp', {
-            template: '<div>I am comp</div>'
+            template: '<div>I am comp {{msg}}</div>',
+            props: ['msg']
         })
         // 创建实例
         const app = new Vue({
-            el: '#demo'
+            el: '#demo',
+            data() {
+              return {
+                msg: ''
+              }
+            }
         });
+        setTimeout(_=> {
+          app.msg = 'hihihi'
+        }, 1000)
     </script>
 </body>
 

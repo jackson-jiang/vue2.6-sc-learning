@@ -139,7 +139,7 @@ export function createPatchFunction(backend) {
 
   let creatingElmInVPre = 0;
 
-
+  // * vnode-->dom
   function createElm(
     vnode,
     insertedVnodeQueue,
@@ -339,6 +339,7 @@ export function createPatchFunction(backend) {
     return isDef(vnode.tag);
   }
 
+  // * @JK: 调用创建元素的钩子，所有的模块进行处理，比如属性，事件等，从vdom-->dom
   function invokeCreateHooks(vnode, insertedVnodeQueue) {
     for (let i = 0; i < cbs.create.length; ++i) {
       cbs.create[i](emptyNode, vnode);
@@ -679,6 +680,7 @@ export function createPatchFunction(backend) {
     // if the new node is not cloned it means the render functions have been
     // reset by the hot-reload-api and we need to do a proper re-render.
     // ? @JK 如何设置节点是static的
+    // * compile时做的静态标记
     if (
       isTrue(vnode.isStatic) &&
       isTrue(oldVnode.isStatic) &&
@@ -692,6 +694,7 @@ export function createPatchFunction(backend) {
     let i;
     // * @JK vnode.data是在createElement中设置的
     // * @JK: prepatch 钩子, 组件会更新子节点slots等
+    // * 定义在。/creat-component中
     const data = vnode.data;
     if (isDef(data) && isDef((i = data.hook)) && isDef((i = i.prepatch))) {
       i(oldVnode, vnode);
@@ -883,6 +886,7 @@ export function createPatchFunction(backend) {
     }
   }
   // * @JK[渲染流程]: 03 patch方法
+  // * 组件patch
   // createPatchFunction
   return function patch(oldVnode, vnode, hydrating, removeOnly) {
     // * @JK: 处理根节点比较
@@ -909,7 +913,7 @@ export function createPatchFunction(backend) {
         patchVnode(oldVnode, vnode, insertedVnodeQueue, null, null, removeOnly);
       } else {
         // * @JK: 不同，则替换
-
+        // * <component :is="">?, v-if?
         // * 初始化的场景
         if (isRealElement) {
           // mounting to a real element
@@ -935,6 +939,7 @@ export function createPatchFunction(backend) {
           }
           // either not server-rendered, or hydration failed.
           // create an empty node and replace it
+          // * dom转成vnode格式
           oldVnode = emptyNodeAt(oldVnode);
         }
 
@@ -943,6 +948,7 @@ export function createPatchFunction(backend) {
         const parentElm = nodeOps.parentNode(oldElm);
 
         // create new node
+        // * 因为不同老节点会被删除，新节点放到原老节点之后
         createElm(
           vnode,
           insertedVnodeQueue,
@@ -952,7 +958,7 @@ export function createPatchFunction(backend) {
           oldElm._leaveCb ? null : parentElm,
           nodeOps.nextSibling(oldElm)
         );
-
+        // ? 没太明白这是干啥
         // update parent placeholder node element, recursively
         if (isDef(vnode.parent)) {
           let ancestor = vnode.parent;
@@ -961,6 +967,7 @@ export function createPatchFunction(backend) {
             for (let i = 0; i < cbs.destroy.length; ++i) {
               cbs.destroy[i](ancestor);
             }
+            // ? 所有祖先的elm都等于当前elm？
             ancestor.elm = vnode.elm;
             if (patchable) {
               for (let i = 0; i < cbs.create.length; ++i) {

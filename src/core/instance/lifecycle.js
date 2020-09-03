@@ -69,9 +69,9 @@ export function initLifecycle(vm: Component) {
   vm._isBeingDestroyed = false
 }
 
-export function lifecycleMixin(Vue: Class < Component > ) {
+export function lifecycleMixin(Vue: Class<Component> ) {
   // * @JK[渲染流程]: 02 _update
-  Vue.prototype._update = function (vnode: VNode, hydrating ? : boolean) {
+  Vue.prototype._update = function (vnode: VNode, hydrating ?: boolean) {
     const vm: Component = this
     const prevEl = vm.$el
     const prevVnode = vm._vnode
@@ -156,7 +156,7 @@ export function lifecycleMixin(Vue: Class < Component > ) {
 export function mountComponent(
   vm: Component,
   el: ? Element,
-  hydrating ? : boolean
+  hydrating ?: boolean
 ): Component {
   vm.$el = el
   if (!vm.$options.render) {
@@ -230,12 +230,14 @@ export function mountComponent(
   return vm
 }
 
+// * @JK: 更新子组件
+// * 方法：更新数据响应式数据 --> 触发子组件的watcher->updateComponent->子组件patch
 export function updateChildComponent(
   vm: Component,
   propsData: ? Object,
-  listeners : ? Object,
-  parentVnode : MountedComponentVNode,
-  renderChildren: ? Array < VNode >
+  listeners: ? Object,
+  parentVnode: MountedComponentVNode,
+  renderChildren: ? Array<VNode>
 ) {
   if (process.env.NODE_ENV !== 'production') {
     isUpdatingChildComponent = true
@@ -317,7 +319,7 @@ function isInInactiveTree(vm) {
   return false
 }
 
-export function activateChildComponent(vm: Component, direct ? : boolean) {
+export function activateChildComponent(vm: Component, direct ?: boolean) {
   if (direct) {
     vm._directInactive = false
     if (isInInactiveTree(vm)) {
@@ -335,7 +337,7 @@ export function activateChildComponent(vm: Component, direct ? : boolean) {
   }
 }
 
-export function deactivateChildComponent(vm: Component, direct ? : boolean) {
+export function deactivateChildComponent(vm: Component, direct ?: boolean) {
   if (direct) {
     vm._directInactive = true
     if (isInInactiveTree(vm)) {
